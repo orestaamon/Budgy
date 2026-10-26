@@ -1,5 +1,8 @@
 var builder = WebApplication.CreateBuilder(args);
 
+   System.Globalization.CultureInfo.DefaultThreadCurrentCulture =
+       System.Globalization.CultureInfo.InvariantCulture; // makes the server read them correcrtly on norwegian pc
+
 // Add services to the container.
 builder.Services.AddRazorPages();
 
