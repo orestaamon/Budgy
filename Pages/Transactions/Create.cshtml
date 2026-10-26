@@ -1,0 +1,52 @@
+@page
+@model WebBudgy.Pages.Transactions.CreateModel
+@{
+    ViewData["Title"] = "Ny transaksjon";
+}
+
+<h1>Ny transaksjon</h1>
+
+<div class="row">
+<div class="col-md-6">
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label class="form-label">Kategori</label>
+        <select asp-for="Transaction.CategoryId" asp-items="Model.CategoryList" class="form-select">
+            <option value="0">-- Velg kategori --</option>
+        </select>
+        <span asp-validation-for="Transaction.CategoryId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Beløp (kr)</label>
+        <input asp-for="Transaction.Amount" type="number" step="0.01" min="0.01" class="form-control" />
+        <span asp-validation-for="Transaction.Amount" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Dato</label>
+        <input asp-for="Transaction.Date" class="form-control" />
+        <span asp-validation-for="Transaction.Date" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Notat</label>
+        <input asp-for="Transaction.Description" class="form-control" placeholder="F.eks. Matbutikk" />
+    </div>
+
+    <div class="form-check mb-3">
+        <input asp-for="Transaction.RepeatMonthly" class="form-check-input" />
+        <label class="form-check-label">Gjentas hver måned (f.eks. husleie)</label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Lagre</button>
+    <a asp-page="Index" class="btn btn-link">Avbryt</a>
+</form>
+</div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

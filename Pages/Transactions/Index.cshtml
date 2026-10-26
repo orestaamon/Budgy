@@ -1,0 +1,50 @@
+@page
+@model WebBudgy.Pages.Transactions.IndexModel
+@{
+    ViewData["Title"] = "Transaksjoner";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Transaksjoner</h1>
+    <a asp-page="Create" class="btn btn-primary">+ Ny transaksjon</a>
+</div>
+
+@if (Model.Transactions.Count == 0)
+{
+    <p>Ingen transaksjoner ennå. Legg inn din første!</p>
+}
+else
+{
+    <table class="table align-middle">
+        <thead>
+            <tr>
+                <th>Dato</th>
+                <th>Kategori</th>
+                <th>Notat</th>
+                <th class="text-end">Beløp</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var t in Model.Transactions)
+            {
+                <tr>
+                    <td>@t.Date.ToString("dd.MM.yyyy")</td>
+                    <td>@t.CategoryName</td>
+                    <td>@t.Description</td>
+                    <td class="text-end @(t.Type == "Income" ? "text-success" : "text-danger")">
+                        @(t.Type == "Income" ? "+" : "−") @Money.Kr(t.Amount)
+                    </td>
+                    <td class="text-end">
+                        <a asp-page="Edit" asp-route-id="@t.TransactionId"
+                           class="btn btn-sm btn-outline-secondary">Endre</a>
+                        <form method="post" asp-page-handler="Delete" asp-route-id="@t.TransactionId"
+                              class="d-inline" onsubmit="return confirm('Vil du slette denne transaksjonen?');">
+                            <button type="submit" class="btn btn-sm btn-outline-danger">Slett</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
