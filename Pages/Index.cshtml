@@ -1,10 +1,47 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Oversikt";
+    var prev = Model.SelectedMonth.AddMonths(-1);
+    var next = Model.SelectedMonth.AddMonths(1);
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Oversikt – @Model.MonthName</h1>
+    <div>
+        <a asp-route-year="@prev.Year" asp-route-month="@prev.Month" class="btn btn-outline-secondary btn-sm">◀ Forrige</a>
+        <a asp-route-year="@next.Year" asp-route-month="@next.Month" class="btn btn-outline-secondary btn-sm">Neste ▶</a>
+    </div>
 </div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="card p-3">Inntekter <h3 class="text-success">@Money.Kr(Model.Income)</h3></div>
+    </div>
+    <div class="col-md-4">
+        <div class="card p-3">Utgifter <h3 class="text-danger">@Money.Kr(Model.Expenses)</h3></div>
+    </div>
+    <div class="col-md-4">
+        <div class="card p-3">Igjen <h3>@Money.Kr(Model.Left)</h3></div>
+    </div>
+</div>
+
+<h4>Utgifter per kategori</h4>
+@if (Model.SpentPerCategory.Count == 0)
+{
+    <p>Ingen utgifter denne måneden ennå.</p>
+}
+else
+{
+    <table class="table">
+        @foreach (var c in Model.SpentPerCategory)
+        {
+            <tr>
+                <td>@c.CategoryName</td>
+                <td class="text-end">@Money.Kr(c.Total)</td>
+            </tr>
+        }
+    </table>
+}
+
+<a asp-page="/Transactions/Create" class="btn btn-primary">+ Ny transaksjon</a>
